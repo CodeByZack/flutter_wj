@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterdemo/common/config.dart';
+import 'package:flutterdemo/common/utils.dart';
 import 'package:flutterdemo/components/CourseItem.dart';
 import 'package:flutterdemo/model/courseBean.dart';
 
@@ -161,8 +163,9 @@ class MyDrawer extends StatelessWidget {
                       ),
                       FlatButton(
                         child: Text("ok"),
-                        onPressed: () {
-                          Navigator.of(context).pushNamed("/login");
+                        onPressed: () async{
+                          await SPDataUtils.deleteKey(Config.TOKEN_KEY);
+                          Navigator.of(context).pushNamedAndRemoveUntil("/",ModalRoute.withName('/'));
                         },
                         color: Color(0xFF1890FF),
                         textColor: Colors.white,

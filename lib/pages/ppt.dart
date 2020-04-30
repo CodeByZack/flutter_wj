@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutterdemo/common/utils.dart';
 import 'package:flutterdemo/components/customePDF.dart';
-import '../utils.dart';
 
 class PPT extends StatefulWidget {
   @override

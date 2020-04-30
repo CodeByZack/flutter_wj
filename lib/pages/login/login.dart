@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutterdemo/common/config.dart';
+import 'package:flutterdemo/common/utils.dart';
+import 'package:flutterdemo/http/api.dart';
 
 class Login extends StatefulWidget {
   Login({Key key}) : super(key: key);
@@ -9,23 +12,49 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
-  String _userName;
-  String _password;
   bool passwordVisible = false;
+  TextEditingController usernameC = TextEditingController();
+  TextEditingController passwordC = TextEditingController();
 
-  void onLogin(BuildContext context) {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    isLogin();
+  }
+
+  void isLogin() async {
+    var token = await SPDataUtils.getKey(Config.TOKEN_KEY);
+    print(token);
+    if (token != null) {
+      Navigator.of(context).pushReplacementNamed("/home");
+    } else {
+      var username = await SPDataUtils.getKey(Config.USERNAME_KEY);
+      var password = await SPDataUtils.getKey(Config.PASSWORD_KEY);
+      print(username);
+      print(password);
+      setState(() {
+        usernameC.text = username;
+        passwordC.text = password;
+      });
+    }
+  }
+
+  void onLogin(BuildContext context) async {
     // Validate will return true if the form is valid, or false if
     // the form is invalid.
-    print(context);
+    print("onlogin");
     if (_formKey.currentState.validate()) {
       // Process data.
       _formKey.currentState.save();
-      print(_userName);
-      print(_password);
-      print(_userName == "123");
-      if (_userName == "123" && _password == "123456") {
-        print("jump home");
+      try {
+        var token = await login("");
+        await SPDataUtils.saveKey(Config.USERNAME_KEY, usernameC.text);
+        await SPDataUtils.saveKey(Config.PASSWORD_KEY, passwordC.text);
+        await SPDataUtils.saveKey(Config.TOKEN_KEY, token);
         Navigator.of(context).pushReplacementNamed("/home");
+      } catch (e) {
+        print(e);
       }
     }
   }
@@ -55,21 +84,11 @@ class _LoginState extends State<Login> {
                           height: 72,
                           child: TextFormField(
                             keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.person,
-                                  color: Color(0xFFBEBEBE),
-                                ),
-                                // contentPadding: const EdgeInsets.all(0),
-                                labelStyle: TextStyle(color: Colors.white),
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Color(0xFFBEBEBE))),
-                                hintStyle: TextStyle(
-                                    inherit: true,
-                                    fontSize: 18.0,
-                                    color: Color(0xFFBEBEBE)),
-                                hintText: 'username'),
+                            controller: usernameC,
+                            decoration: buildInputDecoration(
+                                "username",
+                                Icon(Icons.person, color: Color(0xFFBEBEBE)),
+                                null),
                             validator: (value) {
                               if (value.isEmpty) {
                                 return 'please input';
@@ -77,7 +96,7 @@ class _LoginState extends State<Login> {
                               return null;
                             },
                             onSaved: (value) {
-                              _userName = value;
+                              usernameC.text = value;
                             },
                           ),
                         ),
@@ -85,13 +104,15 @@ class _LoginState extends State<Login> {
                           height: 72,
                           child: TextFormField(
                             keyboardType: TextInputType.visiblePassword,
-                            obscureText: passwordVisible,
-                            decoration: InputDecoration(
-                                prefixIcon: Icon(
+                            controller: passwordC,
+                            obscureText: !passwordVisible,
+                            decoration: buildInputDecoration(
+                                "password",
+                                Icon(
                                   Icons.lock,
                                   color: Color(0xFFBEBEBE),
                                 ),
-                                suffixIcon: IconButton(
+                                IconButton(
                                   icon: Icon(
                                     // Based on passwordVisible state choose the icon
                                     passwordVisible
@@ -105,16 +126,7 @@ class _LoginState extends State<Login> {
                                       passwordVisible = !passwordVisible;
                                     });
                                   },
-                                ),
-                                labelStyle: new TextStyle(color: Colors.white),
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: new BorderSide(
-                                        color: Color(0xFFBEBEBE))),
-                                hintStyle: new TextStyle(
-                                    inherit: true,
-                                    fontSize: 18.0,
-                                    color: Color(0xFFBEBEBE)),
-                                hintText: 'password'),
+                                )),
                             validator: (value) {
                               if (value.isEmpty) {
                                 return 'please input';
@@ -125,7 +137,7 @@ class _LoginState extends State<Login> {
                               return null;
                             },
                             onSaved: (value) {
-                              _password = value;
+                              passwordC.text = value;
                             },
                           ),
                         ),
@@ -168,5 +180,18 @@ class _LoginState extends State<Login> {
             ),
           ),
         ));
+  }
+
+  InputDecoration buildInputDecoration(hintText, prefixIcon, suffixIcon) {
+    return InputDecoration(
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
+        // contentPadding: const EdgeInsets.all(0),
+        labelStyle: TextStyle(color: Colors.white),
+        enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Color(0xFFBEBEBE))),
+        hintStyle:
+            TextStyle(inherit: true, fontSize: 18.0, color: Color(0xFFBEBEBE)),
+        hintText: hintText);
   }
 }

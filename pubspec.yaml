@@ -29,6 +29,7 @@ dependencies:
   numberpicker: ^1.0.0
   flutter_full_pdf_viewer: ^1.0.6
   dio: 3.0.7
+  shared_preferences: ^0.5.7
   
   pdf_viewer_plugin: ^1.0.0+2
 

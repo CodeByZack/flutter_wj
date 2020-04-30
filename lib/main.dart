@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutterdemo/pages/login.dart';
 
+import 'common/global.dart';
 import 'pages/home.dart';
+import 'pages/login/login.dart';
 import 'pages/ppt.dart';
 
-void main() => runApp(MyApp());
+
+void main() async{
+  await Global.init();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.

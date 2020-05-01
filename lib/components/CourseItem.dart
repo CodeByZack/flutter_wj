@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterdemo/components/Button.dart';
 import 'package:flutterdemo/model/courseBean.dart';
 
 var statusMaps = {
@@ -13,11 +14,10 @@ class StatusItem {
 }
 
 class CourseItem extends StatelessWidget {
-
   final CourseBean courseBean;
   final VoidCallback onViewPPT;
 
-  CourseItem(this.courseBean,this.onViewPPT);
+  CourseItem(this.courseBean, this.onViewPPT);
 
   @override
   Widget build(BuildContext context) {
@@ -42,17 +42,10 @@ class CourseItem extends StatelessWidget {
                   null),
               buildListTitle("images/icon-3.png", null,
                   "Class 11,Grade 7,Beijing Clover Primary School"),
-              RaisedButton(
+              Button(
+                text: "View PPT",
                 onPressed: onViewPPT,
-                elevation: 0,
-                color: Color(0xFF1890FF),
-                textColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text('View PPT'),
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 40),
               ),
             ],
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterdemo/common/config.dart';
 import 'package:flutterdemo/common/utils.dart';
+import 'package:flutterdemo/components/Button.dart';
 import 'package:flutterdemo/http/api.dart';
 
 class Login extends StatefulWidget {
@@ -160,17 +161,7 @@ class _LoginState extends State<Login> {
                           height: 50,
                           margin: EdgeInsets.only(top: 10),
                           padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: RaisedButton(
-                            onPressed: () {
-                              onLogin(context);
-                            },
-                            color: Color(0xFF1890FF),
-                            textColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                            child: Text('Login'),
-                          ),
+                          child: Button(text:"Login",onPressed: (){onLogin(context);},),
                         ),
                       ],
                     ),

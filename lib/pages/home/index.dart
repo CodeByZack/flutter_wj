@@ -1,6 +1,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterdemo/common/config.dart';
+import 'package:flutterdemo/common/utils.dart';
 import 'package:flutterdemo/model/courseBean.dart';
 import 'package:flutterdemo/pages/home/HomeAppbar.dart';
 import 'package:flutterdemo/pages/home/HomeListView.dart';
@@ -14,6 +16,21 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _isLogin();
+  }
+
+  void _isLogin() async {
+    var token = await SPDataUtils.getKey(G.TOKEN_KEY);
+    print(token);
+    if (token == null) {
+      Navigator.of(context).pushReplacementNamed("/login");
+    }
+  }
 
   _jumpToPPT(BuildContext context) {
     return (CourseBean bean) {

@@ -3,9 +3,10 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:flutterdemo/common/global.dart';
 
 class CustomeThemeData {
-  static const titleTextStyle = TextStyle(
+  static TextStyle titleTextStyle = TextStyle(
       color: Colors.black,
       fontSize: 18,
       fontWeight: FontWeight.bold,
@@ -17,12 +18,12 @@ class CustomeThemeData {
   static ThemeData themeData() {
     return ThemeData(
         backgroundColor: Colors.white,
-        primaryColor: Color(0xFF1890FF),
+        primaryColor: G.colorBlue,
         appBarTheme: AppBarTheme(
             elevation: 0,
             color: Colors.white,
             iconTheme: IconThemeData(color: Colors.black),
             textTheme: TextTheme(title: titleTextStyle)),
-        buttonTheme: ButtonThemeData(buttonColor: Color(0xFF1890FF)));
+        buttonTheme: ButtonThemeData(buttonColor: G.colorBlue));
   }
 }

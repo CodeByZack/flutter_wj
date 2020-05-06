@@ -25,7 +25,7 @@ class SPDataUtils{
   // 获取数据
   static Future getKey(key) async{
     SharedPreferences sp = await SharedPreferences.getInstance();
-    print(sp.get(key));
+    // print(sp.get(key));
     return sp.get(key);
   }
 

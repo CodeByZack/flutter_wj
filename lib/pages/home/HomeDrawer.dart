@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterdemo/common/config.dart';
+import 'package:flutterdemo/common/global.dart';
 import 'package:flutterdemo/common/utils.dart';
 import 'package:flutterdemo/components/Button.dart';
 import 'package:flutterdemo/components/Dialog.dart';
@@ -11,9 +12,9 @@ class HomeDrawer extends StatelessWidget {
 
   void onLogout(BuildContext context) {
     MyDialog.showMyDialog(context, "title", "content", () async {
-      await SPDataUtils.deleteKey(Config.TOKEN_KEY);
+      await SPDataUtils.deleteKey(G.TOKEN_KEY);
       Navigator.of(context)
-          .pushNamedAndRemoveUntil("/", ModalRoute.withName('/'));
+          .pushNamedAndRemoveUntil("/login", ModalRoute.withName('/login'));
     });
   }
 
@@ -34,7 +35,7 @@ class HomeDrawer extends StatelessWidget {
                 "teacher",
                 style: TextStyle(
                     fontSize: 18,
-                    color: Color(0xFF333333),
+                    color: G.colorTextDark,
                     fontWeight: FontWeight.bold),
               )
             ],

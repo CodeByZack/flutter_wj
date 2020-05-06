@@ -1,20 +1,19 @@
 // 提供五套可选主题色
 import 'package:flutter/material.dart';
-import 'package:flutterdemo/common/utils.dart';
-import 'package:flutterdemo/model/userBean.dart';
 
 
-const _themes = <MaterialColor>[
-  Colors.blue,
-  Colors.cyan,
-  Colors.teal,
-  Colors.green,
-  Colors.red,
-];
+class G {
 
-class Global {
-  static UserBean userBean;
-  static Future init() async {
-    // userBean = await SPDataUtils.getUserBean();
-  } 
+  static const Color colorGrey = Color(0xFFBEBEBE);
+  static const Color colorBlue = Color(0xFF1890FF);
+  static const Color colorTextDark = Color(0xFF333333);
+  static const Color colorTextGrey = Color(0xFF999999);
+
+  static const String USERNAME_KEY = "USERNAME_KEY";
+  static const String PASSWORD_KEY = "PASSWORD_KEY";
+  static const String TOKEN_KEY = "TOKEN_KEY ";
+
+  /// 手动延时
+  static sleep({ int milliseconds = 1000 }) async => await Future.delayed(Duration(milliseconds: milliseconds));
+
 }

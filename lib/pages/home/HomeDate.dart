@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutterdemo/common/global.dart';
 
 class HomeDate extends StatelessWidget {
   const HomeDate({
@@ -12,7 +13,7 @@ class HomeDate extends StatelessWidget {
       height: 90,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-          color: Color(0xFF1890FF),
+          color: G.colorBlue,
           borderRadius: BorderRadius.all(Radius.circular(8))),
       child: Row(
         children: <Widget>[

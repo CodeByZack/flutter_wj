@@ -46,7 +46,7 @@ class Http {
 
   Future handleToken() async {
     if (_token == null) {
-      var token = await SPDataUtils.getKey(Config.TOKEN_KEY);
+      var token = await SPDataUtils.getKey(G.TOKEN_KEY);
       if (token != null) {
         _token = token;
       }
@@ -57,6 +57,8 @@ class Http {
 final Http http = Http();
 
 Future login(args) async {
-  await Future.delayed(Duration(microseconds: 1000));
+  print("now");
+  await G.sleep();
+  print("5sguohou");
   return "test";
 }

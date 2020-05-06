@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutterdemo/theme/customeTheme.dart';
 
 import 'pages/home/index.dart';
-import 'pages/login/login.dart';
-import 'pages/ppt.dart';
+import 'pages/login/index.dart';
+import 'pages/ppt/index.dart';
 
 
 void main() async{
@@ -20,8 +20,8 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: (RouteSettings settings) {
         print('build route for ${settings.name}');
         var routes = <String, WidgetBuilder>{
-          "/home": (ctx) => HomePage(),
-          "/": (ctx) => Login(),
+          "/": (ctx) => HomePage(),
+          "/login": (ctx) => Login(),
           "/ppt": (ctx) => PPT(),
         };
         WidgetBuilder builder = routes[settings.name];

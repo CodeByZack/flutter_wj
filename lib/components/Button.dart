@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterdemo/common/global.dart';
 
 class Button extends StatelessWidget {
   final Widget icon;
   final String text;
   final EdgeInsetsGeometry padding;
   final VoidCallback onPressed;
-  Button({this.icon, this.text,this.onPressed,this.padding});
+  final Color color;
+  Button({this.icon, this.text,this.onPressed,this.padding,this.color = G.colorBlue});
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +17,9 @@ class Button extends StatelessWidget {
       return RaisedButton.icon(
         onPressed: onPressed,
         icon: icon,
-        color: Color(0xFF1890FF),
+        color: color,
         textColor: Colors.white,
+        elevation: 0,
         label: Text(text),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -24,7 +27,9 @@ class Button extends StatelessWidget {
     } else {
       return RaisedButton(
         onPressed: onPressed,
-        color: Color(0xFF1890FF),
+        color: color,
+        elevation: 0,
+
         textColor: Colors.white,
         padding: padding,
         shape: RoundedRectangleBorder(

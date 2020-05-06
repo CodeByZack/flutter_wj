@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterdemo/common/global.dart';
 import 'package:flutterdemo/components/Button.dart';
 import 'package:flutterdemo/model/courseBean.dart';
 
@@ -31,7 +32,7 @@ class CourseItem extends StatelessWidget {
           width: double.infinity,
           padding: EdgeInsets.all(8),
           decoration: BoxDecoration(
-              color: Color(0xFFF4F9FF), borderRadius: BorderRadius.circular(8)),
+              color: Colors.white, borderRadius: BorderRadius.circular(8)),
           child: Column(
             children: <Widget>[
               buildListTitle("images/icon-1.png", "04:00-04:30 Dec.Apr.07",
@@ -63,7 +64,7 @@ Widget buildListTitle(img, text1, text2) {
       style: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.bold,
-        color: Color(0xFF333333),
+        color: G.colorTextDark,
       ),
     ));
   }
@@ -72,7 +73,7 @@ Widget buildListTitle(img, text1, text2) {
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.bold,
-          color: Color(0xFF999999),
+          color: G.colorTextGrey,
         )));
   }
   return Padding(

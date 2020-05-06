@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutterdemo/common/config.dart';
+import 'package:flutterdemo/common/global.dart';
 import 'package:flutterdemo/common/utils.dart';
 import 'package:flutterdemo/components/Button.dart';
+import 'package:flutterdemo/components/Dialog.dart';
 import 'package:flutterdemo/http/api.dart';
+
+import 'buildInputDecoration.dart';
 
 class Login extends StatefulWidget {
   Login({Key key}) : super(key: key);
@@ -25,13 +29,13 @@ class _LoginState extends State<Login> {
   }
 
   void isLogin() async {
-    var token = await SPDataUtils.getKey(Config.TOKEN_KEY);
+    var token = await SPDataUtils.getKey(G.TOKEN_KEY);
     print(token);
     if (token != null) {
       Navigator.of(context).pushReplacementNamed("/home");
     } else {
-      var username = await SPDataUtils.getKey(Config.USERNAME_KEY);
-      var password = await SPDataUtils.getKey(Config.PASSWORD_KEY);
+      var username = await SPDataUtils.getKey(G.USERNAME_KEY);
+      var password = await SPDataUtils.getKey(G.PASSWORD_KEY);
       print(username);
       print(password);
       setState(() {
@@ -42,18 +46,17 @@ class _LoginState extends State<Login> {
   }
 
   void onLogin(BuildContext context) async {
-    // Validate will return true if the form is valid, or false if
-    // the form is invalid.
     print("onlogin");
     if (_formKey.currentState.validate()) {
-      // Process data.
       _formKey.currentState.save();
       try {
+        MyDialog.showLoading(context, "loading...");
         var token = await login("");
-        await SPDataUtils.saveKey(Config.USERNAME_KEY, usernameC.text);
-        await SPDataUtils.saveKey(Config.PASSWORD_KEY, passwordC.text);
-        await SPDataUtils.saveKey(Config.TOKEN_KEY, token);
-        Navigator.of(context).pushReplacementNamed("/home");
+        MyDialog.hideLoading(context);
+        await SPDataUtils.saveKey(G.USERNAME_KEY, usernameC.text);
+        await SPDataUtils.saveKey(G.PASSWORD_KEY, passwordC.text);
+        await SPDataUtils.saveKey(G.TOKEN_KEY, token);
+        Navigator.of(context).pushReplacementNamed("/");
       } catch (e) {
         print(e);
       }
@@ -88,7 +91,7 @@ class _LoginState extends State<Login> {
                             controller: usernameC,
                             decoration: buildInputDecoration(
                                 "username",
-                                Icon(Icons.person, color: Color(0xFFBEBEBE)),
+                                Icon(Icons.person, color: G.colorGrey),
                                 null),
                             validator: (value) {
                               if (value.isEmpty) {
@@ -111,7 +114,7 @@ class _LoginState extends State<Login> {
                                 "password",
                                 Icon(
                                   Icons.lock,
-                                  color: Color(0xFFBEBEBE),
+                                  color: G.colorGrey,
                                 ),
                                 IconButton(
                                   icon: Icon(
@@ -119,7 +122,7 @@ class _LoginState extends State<Login> {
                                     passwordVisible
                                         ? Icons.visibility
                                         : Icons.visibility_off,
-                                    color: Color(0xFFBEBEBE),
+                                    color: G.colorGrey,
                                   ),
                                   onPressed: () {
                                     // Update the state i.e. toogle the state of passwordVisible variable
@@ -147,12 +150,12 @@ class _LoginState extends State<Login> {
                           child: RichText(
                             text: TextSpan(
                                 text: "* Sign in means agree ",
-                                style: TextStyle(color: Color(0xFF4E4E4E)),
+                                style: TextStyle(color: G.colorTextDark),
                                 children: [
                                   TextSpan(
                                       text: "《user agreement》",
                                       style:
-                                          TextStyle(color: Color(0xFF1890FF)))
+                                          TextStyle(color: G.colorBlue))
                                 ]),
                           ),
                         ),
@@ -173,16 +176,4 @@ class _LoginState extends State<Login> {
         ));
   }
 
-  InputDecoration buildInputDecoration(hintText, prefixIcon, suffixIcon) {
-    return InputDecoration(
-        prefixIcon: prefixIcon,
-        suffixIcon: suffixIcon,
-        // contentPadding: const EdgeInsets.all(0),
-        labelStyle: TextStyle(color: Colors.white),
-        enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFFBEBEBE))),
-        hintStyle:
-            TextStyle(inherit: true, fontSize: 18.0, color: Color(0xFFBEBEBE)),
-        hintText: hintText);
-  }
 }

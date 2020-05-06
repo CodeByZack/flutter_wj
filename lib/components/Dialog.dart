@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterdemo/common/global.dart';
+import 'package:flutterdemo/common/utils.dart';
 import 'package:flutterdemo/theme/customeTheme.dart';
 import 'Button.dart';
 
@@ -35,13 +36,12 @@ class MyDialog {
                       text: "cancel",
                       color: G.colorBlue.withOpacity(0.7),
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        NavUtils.pop();
                       }),
                   Button(
                       text: "ok",
                       onPressed: () {
                         onConfirm();
-                        // Navigator.of(context).pop();
                       }),
                 ]),
           ],
@@ -86,6 +86,6 @@ class MyDialog {
   }
 
   static void hideLoading(BuildContext context) {
-    Navigator.of(context).pop();
+    NavUtils.pop();
   }
 }

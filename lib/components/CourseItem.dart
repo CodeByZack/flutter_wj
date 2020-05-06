@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterdemo/common/global.dart';
 import 'package:flutterdemo/components/Button.dart';
+import 'package:flutterdemo/model/course.dart';
 import 'package:flutterdemo/model/courseBean.dart';
 
 var statusMaps = {
@@ -15,34 +16,46 @@ class StatusItem {
 }
 
 class CourseItem extends StatelessWidget {
-  final CourseBean courseBean;
+  final Course courseBean;
   final VoidCallback onViewPPT;
 
   CourseItem(this.courseBean, this.onViewPPT);
 
+  _getSchoolClassInfo(){
+    return "Class ${courseBean.classNum},Grade ${courseBean.grade}, ${courseBean.schoolName}";
+  }
+
+  _getCourseInfo(){
+    return "${courseBean.coursewareName}-${courseBean.coursewareChapterName}";
+  }
+
+  _formateBJtime(){
+    return "Beijing time ${courseBean.stime}-${courseBean.etime} ${courseBean.sdate}";
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         Padding(padding: EdgeInsets.only(top: 16)),
-        StatusWidget(statusMaps[courseBean.courseStatus]),
+        StatusWidget(statusMaps[1]),
         Padding(padding: EdgeInsets.only(top: 8)),
         Container(
           // height: 180,
           width: double.infinity,
           padding: EdgeInsets.all(8),
           decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(8)),
+              color: Color(0xFFF4F9FF), borderRadius: BorderRadius.circular(8)),
           child: Column(
             children: <Widget>[
               buildListTitle("images/icon-1.png", "04:00-04:30 Dec.Apr.07",
-                  "Beijing time 14:30-15:00 Fri.Apr.19"),
+                  _formateBJtime()),
               buildListTitle(
                   "images/icon-2.png",
-                  "G7L4-Lesson 4 School Life Jijiao G7 in 2019 spring term",
+                  _getCourseInfo(),
                   null),
               buildListTitle("images/icon-3.png", null,
-                  "Class 11,Grade 7,Beijing Clover Primary School"),
+                  _getSchoolClassInfo()),
               Button(
                 text: "View PPT",
                 onPressed: onViewPPT,
@@ -69,11 +82,14 @@ Widget buildListTitle(img, text1, text2) {
     ));
   }
   if (text2 != null) {
+    if(text1!=null){
+      texts.add(SizedBox(height: 8,));
+    }
     texts.add(Text(text2,
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.bold,
-          color: G.colorTextGrey,
+          color: text1 == null ? G.colorTextDarkGrey : G.colorTextGrey,
         )));
   }
   return Padding(

@@ -4,6 +4,7 @@ import 'package:flutterdemo/common/utils.dart';
 import 'package:flutterdemo/components/Button.dart';
 import 'package:flutterdemo/components/Dialog.dart';
 import 'package:flutterdemo/http/api.dart';
+import 'package:flutterdemo/model/userinfobean.dart';
 
 import 'buildInputDecoration.dart';
 
@@ -28,10 +29,8 @@ class _LoginState extends State<Login> {
   }
 
   void isLogin() async {
-    var token = await SPDataUtils.getKey(G.TOKEN_KEY);
-    print(token);
-    if (token != null) {
-      Navigator.of(context).pushReplacementNamed("/home");
+    if (G.user !=null && G.user.tokenInfo !=null && G.user.tokenInfo.token != null) {
+      NavUtils.pushReplacementNamed("/");
     } else {
       var username = await SPDataUtils.getKey(G.USERNAME_KEY);
       var password = await SPDataUtils.getKey(G.PASSWORD_KEY);
@@ -49,13 +48,15 @@ class _LoginState extends State<Login> {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       try {
-        MyDialog.showLoading(context, "loading...");
-        var token = await login("");
+        MyDialog.showLoading(context,"loading...");
+        UserInfoBean userInfoBean = await login(usernameC.text,passwordC.text);
+        G.user = userInfoBean;
         MyDialog.hideLoading(context);
         await SPDataUtils.saveKey(G.USERNAME_KEY, usernameC.text);
         await SPDataUtils.saveKey(G.PASSWORD_KEY, passwordC.text);
-        await SPDataUtils.saveKey(G.TOKEN_KEY, token);
-        Navigator.of(context).pushReplacementNamed("/");
+        // await SPDataUtils.saveKey(G.TOKEN_KEY, userInfoBean.tokenInfo.token);
+        await SPDataUtils.saveKey(G.LOGIN_INFO_KEY, userInfoBean.toJsonString());
+        NavUtils.pushReplacementNamed("/");
       } catch (e) {
         print(e);
       }

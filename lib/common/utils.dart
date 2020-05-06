@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterdemo/model/userBean.dart';
+import 'package:flutterdemo/common/global.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,6 +11,11 @@ class Utils{
     String savePath = '$dir/$filename.pdf';
     await Dio().download(url, savePath);
     return savePath;
+  }
+
+  static String fromateDate(String date){
+
+    return "";
   } 
 }
  
@@ -35,4 +40,27 @@ class SPDataUtils{
     sp.remove(key);
   }
 
+}
+
+class NavUtils{
+  static void pop(){
+    G.getCurrentState().pop();
+  }
+  static void pushNamed(String routeName, {
+    Object arguments,
+  }){
+    G.getCurrentState().pushNamed(routeName,arguments:arguments);
+  }
+  static void pushReplacementNamed(String routeName, {
+    Object arguments,
+  }){
+    G.getCurrentState().pushReplacementNamed(routeName,arguments: arguments);
+  }
+  static void pushNamedAndRemoveUntil(
+    String newRouteName,
+    RoutePredicate predicate, {
+    Object arguments,
+  }){
+    G.getCurrentState().pushNamedAndRemoveUntil(newRouteName, predicate,arguments: arguments);
+  }
 }

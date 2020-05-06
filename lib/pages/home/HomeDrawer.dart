@@ -10,10 +10,10 @@ class HomeDrawer extends StatelessWidget {
   }) : super(key: key);
 
   void onLogout(BuildContext context) {
-    MyDialog.showMyDialog(context, "title", "content", () async {
-      await SPDataUtils.deleteKey(G.TOKEN_KEY);
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil("/login", ModalRoute.withName('/login'));
+    MyDialog.showMyDialog(context, "Notice", "Do you want to log out your CLASS100 account?", () async {
+      await SPDataUtils.deleteKey(G.LOGIN_INFO_KEY);
+      G.user = null;
+      NavUtils.pushNamedAndRemoveUntil("/login", (Route<dynamic> route) => false);
     });
   }
 
@@ -26,12 +26,11 @@ class HomeDrawer extends StatelessWidget {
           Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(top: 10, bottom: 10),
-                child: Image.asset("images/avatar-default.png",
-                    width: 100, height: 100),
-              ),
+                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                  child: Image.asset("images/avatar-default.png",
+                      width: 100, height: 100)),
               Text(
-                "teacher",
+                G.user.userInfo.username,
                 style: TextStyle(
                     fontSize: 18,
                     color: G.colorTextDark,

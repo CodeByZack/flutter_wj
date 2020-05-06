@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterdemo/common/global.dart';
 import 'package:flutterdemo/common/utils.dart';
+import 'package:flutterdemo/http/api.dart';
+import 'package:flutterdemo/model/course.dart';
 import 'package:flutterdemo/model/courseBean.dart';
 import 'package:flutterdemo/pages/home/HomeAppbar.dart';
 import 'package:flutterdemo/pages/home/HomeListView.dart';
@@ -16,26 +18,27 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
-
+  List<Course> courseList = [];
+  bool isFetching = true;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _isLogin();
+    _getCouseList();
   }
 
-  void _isLogin() async {
-    var token = await SPDataUtils.getKey(G.TOKEN_KEY);
-    print(token);
-    if (token == null) {
-      Navigator.of(context).pushReplacementNamed("/login");
-    }
+  void _getCouseList() async{
+    var courseList = await getCourses();
+    setState(() {
+      this.isFetching = false;
+      this.courseList = courseList;
+    });
   }
 
   _jumpToPPT(BuildContext context) {
-    return (CourseBean bean) {
-      print(bean.courseStatus);
-      Navigator.of(context).pushNamed("/ppt");
+    return (Course bean) {
+      print(bean);
+      NavUtils.pushNamed("/ppt");
     };
   }
 
@@ -52,8 +55,10 @@ class _HomePageState extends State<HomePage> {
       appBar: buildAppBar(_openDrawer),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 8),
-        child: HomeListView(
-          data: entries,
+        child: isFetching ? 
+        Center(child:CircularProgressIndicator()):
+        HomeListView(
+          data: courseList,
           onItemClick: _jumpToPPT(context),
         ),
       ),

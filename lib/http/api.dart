@@ -2,9 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutterdemo/common/global.dart';
 import 'package:flutterdemo/common/utils.dart';
+import 'package:flutterdemo/model/course.dart';
+import 'package:flutterdemo/model/userinfobean.dart';
 
 BaseOptions options = BaseOptions(
-  baseUrl: "http://47.94.254.236:55",
+  baseUrl: "https://class-platform-teacher.dev.class100.com",
   connectTimeout: 5000,
   receiveTimeout: 3000,
 );
@@ -19,28 +21,30 @@ class Http {
     }
 
     dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (Options options) async {
-        await handleToken();
-        options.headers["Authorization"] = _token;
-        return options;
-      }, 
-      onResponse: (Response response) {
-        var data = response.data;
-        if (data == null) {
-          return dio.reject('request error');
-        }
-        var code = data['code'];
-        if (code == 0) {
-          return dio.resolve(data['data']);
-        }
-        if (code == 401) {
-          return dio.reject('401');
-        }
-        return dio.reject(data['msg'] ?? 'request error');
-      }, 
-      onError: (DioError error) {
-        print(error.message);
-      }));
+    onRequest: (Options options) async {
+      if(G.user!=null){
+        options.headers["Authorization"] = G.user.tokenInfo.token;
+      }
+      return options;
+    }, 
+    onResponse: (Response response) {
+      var data = response.data;
+      if (data == null) {
+        return dio.reject('request error');
+      }
+      var code = data['code'];
+      if (code == "ok") {
+        return dio.resolve(data['data']);
+      }
+
+      return dio.reject(data['msg'] ?? 'request error');
+      // if (code == 401) {
+      //   return dio.reject('401');
+      // }
+
+    }, onError: (DioError error) {
+      print(error.message);
+    }));
   }
 
   Future handleToken() async {
@@ -55,9 +59,21 @@ class Http {
 
 final Http http = Http();
 
-Future login(args) async {
-  print("now");
-  await G.sleep();
-  print("5sguohou");
-  return "test";
+Future<UserInfoBean> login(loginName, password) async {
+  var data = {
+    "login_name": loginName,
+    "password": password,
+  };
+  Response<Map<String, dynamic>> loginResponse = await http.dio.post("/login", data: data);
+  var loginInfo = UserInfoBean.fromJson(loginResponse.data);
+  return loginInfo;
+}
+
+Future<List<Course>> getCourses() async{
+  Response<List> res = await http.dio.get("/api/v1/lessons");
+  List<Course> courses = res.data.map((json){
+    return Course.fromJson(json);
+  }).toList();
+  print(res);
+  return courses;
 }

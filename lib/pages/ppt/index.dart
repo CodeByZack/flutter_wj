@@ -66,7 +66,7 @@ class PPTState extends State<PPT> {
         return IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {
-              Navigator.pop(context);
+              NavUtils.pop();
             });
       }),
     );

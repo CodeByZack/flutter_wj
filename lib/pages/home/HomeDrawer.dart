@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutterdemo/common/config.dart';
 import 'package:flutterdemo/common/global.dart';
 import 'package:flutterdemo/common/utils.dart';
 import 'package:flutterdemo/components/Button.dart';

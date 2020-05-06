@@ -1,7 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterdemo/common/config.dart';
+import 'package:flutterdemo/common/global.dart';
 import 'package:flutterdemo/common/utils.dart';
 import 'package:flutterdemo/model/courseBean.dart';
 import 'package:flutterdemo/pages/home/HomeAppbar.dart';

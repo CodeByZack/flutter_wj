@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutterdemo/common/config.dart';
 import 'package:flutterdemo/common/global.dart';
 import 'package:flutterdemo/common/utils.dart';
 

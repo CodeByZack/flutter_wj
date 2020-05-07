@@ -1,14 +1,20 @@
 
+import 'dart:ui';
+
+import 'package:date_time_format/date_time_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterdemo/common/global.dart';
 
 class HomeDate extends StatelessWidget {
-  const HomeDate({
-    Key key,
-  }) : super(key: key);
+  const HomeDate();
 
   @override
   Widget build(BuildContext context) {
+
+    DateTime dateTime = DateTime.now();
+    DateTime dateTime2 = DateTime.now();
+    print(DateTimeFormat.format(dateTime, format: 'O e T'));
+
     return Container(
       height: 90,
       alignment: Alignment.center,
@@ -26,8 +32,16 @@ class HomeDate extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize: 12),
               ),
               Padding(padding: EdgeInsets.only(top: 10)),
-              Text("09:40am",
-                  style: TextStyle(color: Colors.white, fontSize: 26)),
+              RichText(text: TextSpan(
+                text: DateTimeFormat.format(dateTime, format: 'h:i'),
+                style: TextStyle(color: Colors.white, fontSize: 26),
+                children: [
+                  TextSpan(
+                    text: "  ${DateTimeFormat.format(dateTime, format: 'a')}",
+                    style: TextStyle(fontSize: 12)
+                  )
+                ]
+              ))
             ],
           )),
           Expanded(
@@ -36,7 +50,7 @@ class HomeDate extends StatelessWidget {
             children: <Widget>[
               Text("Date", style: TextStyle(color: Colors.white, fontSize: 12)),
               Padding(padding: EdgeInsets.only(top: 10)),
-              Text("2019-10-11",
+              Text(DateTimeFormat.format(dateTime, format: 'D.M.j.Y'),
                   style: TextStyle(color: Colors.white, fontSize: 18)),
             ],
           ))

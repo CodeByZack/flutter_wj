@@ -12,11 +12,6 @@ class Utils{
     print(savePath);
     await Dio().download(url, savePath);
     return savePath;
-  }
-
-  static String fromateDate(String date){
-    DateTime.now();
-    return "";
   } 
 }
  

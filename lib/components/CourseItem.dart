@@ -1,8 +1,9 @@
+import 'package:date_time_format/date_time_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterdemo/common/global.dart';
+import 'package:flutterdemo/common/utils.dart';
 import 'package:flutterdemo/components/Button.dart';
 import 'package:flutterdemo/model/course.dart';
-import 'package:flutterdemo/model/courseBean.dart';
 
 var statusMaps = {
   2: StatusItem("Staring soon", Color(0xFF1CE384)),
@@ -29,8 +30,27 @@ class CourseItem extends StatelessWidget {
     return "${courseBean.coursewareName}-${courseBean.coursewareChapterName}";
   }
 
+  _formateLocaltime(){
+    String sdtStr = "${courseBean.sdate} ${courseBean.stime}";
+    String edtStr = "${courseBean.sdate} ${courseBean.etime}";
+
+    DateTime sdateTime = DateTime.parse(sdtStr);
+    DateTime edateTime = DateTime.parse(edtStr);
+
+    Duration timeOffset = sdateTime.timeZoneOffset;
+    DateTime sdateTimeLocal,edateTimeLocal;
+
+    num diffHours = timeOffset.inHours - 8;
+    sdateTimeLocal = sdateTime.add(Duration(hours: diffHours));
+    edateTimeLocal = edateTime.add(Duration(hours: diffHours));
+
+    return "${DateTimeFormat.format(sdateTimeLocal, format: 'H:i')}-${DateTimeFormat.format(edateTimeLocal, format: 'H:i')} ${DateTimeFormat.format(sdateTimeLocal, format: 'D.M.j')}";
+  }
   _formateBJtime(){
-    return "Beijing time ${courseBean.stime}-${courseBean.etime} ${courseBean.sdate}";
+    DateTime dateTime = DateTime.parse(courseBean.sdate);
+    num diffHours = 8 - dateTime.timeZoneOffset.inHours;
+    DateTime dateTimeLocal = dateTime.add(Duration(hours: diffHours));
+    return "Beijing time ${courseBean.stime}-${courseBean.etime} ${DateTimeFormat.format(dateTime, format: 'D.M.j')}";
   }
   
   @override
@@ -48,7 +68,7 @@ class CourseItem extends StatelessWidget {
               color: Color(0xFFF4F9FF), borderRadius: BorderRadius.circular(8)),
           child: Column(
             children: <Widget>[
-              buildListTitle("images/icon-1.png", "04:00-04:30 Dec.Apr.07",
+              buildListTitle("images/icon-1.png", _formateLocaltime(),
                   _formateBJtime()),
               buildListTitle(
                   "images/icon-2.png",

@@ -1,29 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:flutterdemo/common/utils.dart';
 import 'package:flutterdemo/components/customePDF.dart';
-
+import 'package:flutterdemo/http/api.dart';
+import 'package:flutterdemo/model/course.dart';
+import 'package:flutterdemo/model/pptpath.dart';
 import 'buildTab.dart';
 
-class PPT extends StatefulWidget {
-  @override
-  State<PPT> createState() => PPTState();
-}
 
-Map mockData = {
-  "PPT": "http://africau.edu/images/default/sample.pdf",
-  "LG": "http://africau.edu/images/default/sample.pdf"
-};
+final String NOFILE = "no file";
+
+class PPT extends StatefulWidget {
+  Course course;
+  PPT(this.course);
+  @override
+  State<PPT> createState() => PPTState(course);
+}
 
 class PPTState extends State<PPT> {
   String nowTab = "PPT";
   String ppt_path = "";
   String lg_path = "";
   bool isLoading = true;
+  Course course;
+  Map<String, String> urlMap = {};
+  PPTState(this.course);
 
   @override
   void initState() {
     super.initState();
-    _changeTab("PPT");
+    _getFilePaths();
+  }
+
+  _getFilePaths() async {
+    Pptpath pptpath = await getChapterFiles(course.coursewareChapterId);
+    setState(() {
+      isLoading = false;
+    });
+    //找ppt
+    pptpath.files.forEach((url) {
+      if (url.contains("ppt")) {
+        urlMap["PPT"] = "${pptpath.host}/${url}";
+      }
+      if (url.contains("LG")) {
+        urlMap["LG"] = "${pptpath.host}/${url}";
+      }
+    });
+
+     _changeTab("PPT");
   }
 
   _changeTab(String tab) async {
@@ -32,32 +55,32 @@ class PPTState extends State<PPT> {
     });
 
     if (tab == "PPT" && ppt_path.isEmpty) {
-      setState(() {
-        isLoading = true;
-      });
-      var path = await Utils.createFileOfPdfUrl(mockData["PPT"]);
-      print("load ppt $path");
+      if (!urlMap.containsKey("PPT")) {
+        setState(() {
+          ppt_path = NOFILE;
+        });
+        return;
+      }
+      var path = await Utils.createFileOfPdfUrl(urlMap["PPT"]);
       setState(() {
         ppt_path = path;
-        isLoading = false;
       });
     } else if (tab == "LG" && lg_path.isEmpty) {
-      setState(() {
-        isLoading = true;
-      });
-      var path = await Utils.createFileOfPdfUrl(mockData["LG"]);
-      print("load lg $path");
-
+      if (!urlMap.containsKey("LG")) {
+        setState(() {
+          lg_path = NOFILE;
+        });
+        return;
+      }
+      var path = await Utils.createFileOfPdfUrl(urlMap["LG"]);
       setState(() {
         lg_path = path;
-        isLoading = false;
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     var tab = buildTab(nowTab, _changeTab);
     var _appBar = AppBar(
       title: Text("章节名称"),
@@ -78,17 +101,26 @@ class PPTState extends State<PPT> {
 
     var pathPDF = nowTab == "PPT" ? ppt_path : lg_path;
 
+    var isFetch = isLoading || pathPDF.isEmpty;
+
     return Scaffold(
       appBar: _appBar,
       body: Column(
         children: <Widget>[
           tab,
           Expanded(
-            child: isLoading
+            child: isFetch
                 ? Container(
                     color: Colors.white,
                     child: Center(child: CircularProgressIndicator()))
+                : pathPDF == NOFILE 
+                ? Container(
+                    color: Colors.white,
+                    child: Center(child: Text(NOFILE)))
                 : PDFViewerScaffold(path: pathPDF, top: offsetHight),
+                // : nowTab == "PPT" 
+                // ? PDFViewerScaffold(path: ppt_path, top: offsetHight)
+                // : PDFViewerScaffold(path: lg_path, top: offsetHight)
           ),
         ],
       ),

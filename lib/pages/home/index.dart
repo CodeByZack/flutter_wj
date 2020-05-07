@@ -29,6 +29,9 @@ class _HomePageState extends State<HomePage> {
 
   void _getCouseList() async{
     var courseList = await getCourses();
+    courseList = courseList.where((c){
+      return c.lessonStatus == 1 || c.lessonStatus == 2;
+    }).toList();
     setState(() {
       this.isFetching = false;
       this.courseList = courseList;
@@ -38,7 +41,7 @@ class _HomePageState extends State<HomePage> {
   _jumpToPPT(BuildContext context) {
     return (Course bean) {
       print(bean);
-      NavUtils.pushNamed("/ppt");
+      NavUtils.pushNamed("/ppt",arguments: bean);
     };
   }
 

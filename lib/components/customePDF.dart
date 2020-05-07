@@ -26,10 +26,12 @@ class _PDFViewScaffoldState extends State<PDFViewerScaffold> {
   final pdfViwerRef = new PDFViewerPlugin();
   Rect _rect;
   Timer _resizeTimer;
+  String nowPath;
 
   @override
   void initState() {
     super.initState();
+    nowPath = widget.path;
     pdfViwerRef.close();
   }
 
@@ -42,6 +44,16 @@ class _PDFViewScaffoldState extends State<PDFViewerScaffold> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.path);
+    print(nowPath);
+
+    if(nowPath != widget.path){
+      pdfViwerRef.close();
+      pdfViwerRef.dispose();
+      _rect = null;
+      nowPath = widget.path;
+    }
+
     if (_rect == null) {
       _rect = _buildRect(context);
       pdfViwerRef.launch(

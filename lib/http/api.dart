@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutterdemo/common/global.dart';
 import 'package:flutterdemo/common/utils.dart';
 import 'package:flutterdemo/model/course.dart';
+import 'package:flutterdemo/model/pptpath.dart';
 import 'package:flutterdemo/model/userinfobean.dart';
 
 BaseOptions options = BaseOptions(
@@ -76,4 +77,13 @@ Future<List<Course>> getCourses() async{
   }).toList();
   print(res);
   return courses;
+}
+
+
+Future<Pptpath> getChapterFiles(chapterId) async{
+  var path = "/api/v1/chapters/${chapterId}/files";
+  Response<Map<String, dynamic>> res = await http.dio.get(path);
+  var pptpath = Pptpath.fromJson(res.data);
+  print(pptpath);
+  return pptpath;
 }

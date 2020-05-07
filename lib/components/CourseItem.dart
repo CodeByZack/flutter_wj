@@ -5,8 +5,8 @@ import 'package:flutterdemo/model/course.dart';
 import 'package:flutterdemo/model/courseBean.dart';
 
 var statusMaps = {
-  1: StatusItem("Staring soon", Color(0xFF1CE384)),
-  2: StatusItem("Ongoing", Color(0xFFFFC718))
+  2: StatusItem("Staring soon", Color(0xFF1CE384)),
+  1: StatusItem("Ongoing", Color(0xFFFFC718))
 };
 
 class StatusItem {
@@ -38,7 +38,7 @@ class CourseItem extends StatelessWidget {
     return Column(
       children: <Widget>[
         Padding(padding: EdgeInsets.only(top: 16)),
-        StatusWidget(statusMaps[1]),
+        StatusWidget(statusMaps[courseBean.lessonStatus]),
         Padding(padding: EdgeInsets.only(top: 8)),
         Container(
           // height: 180,

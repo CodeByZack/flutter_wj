@@ -9,12 +9,13 @@ class Utils{
     String filename = url.substring(url.lastIndexOf("/") + 1);
     String dir = (await getTemporaryDirectory()).path;
     String savePath = '$dir/$filename.pdf';
+    print(savePath);
     await Dio().download(url, savePath);
     return savePath;
   }
 
   static String fromateDate(String date){
-
+    DateTime.now();
     return "";
   } 
 }

@@ -3,6 +3,7 @@ class Course {
 	int coursewareChapterId;
 	String coursewareName;
 	String coursewareChapterName;
+  int lessonStatus;
 	int classNum;
 	int grade;
 	String schoolName;
@@ -10,7 +11,7 @@ class Course {
 	String stime;
 	String etime;
 
-	Course({this.coursewareId, this.coursewareChapterId, this.coursewareName, this.coursewareChapterName, this.classNum, this.grade, this.schoolName, this.sdate, this.stime, this.etime});
+	Course({this.lessonStatus,this.coursewareId, this.coursewareChapterId, this.coursewareName, this.coursewareChapterName, this.classNum, this.grade, this.schoolName, this.sdate, this.stime, this.etime});
 
 	Course.fromJson(Map<String, dynamic> json) {
 		coursewareId = json['courseware_id'];
@@ -23,6 +24,7 @@ class Course {
 		sdate = json['sdate'];
 		stime = json['stime'];
 		etime = json['etime'];
+    lessonStatus = json['lesson_status'];
 	}
 
 	Map<String, dynamic> toJson() {
@@ -37,6 +39,7 @@ class Course {
 		data['sdate'] = this.sdate;
 		data['stime'] = this.stime;
 		data['etime'] = this.etime;
+    data['lesson_status'] = this.lessonStatus;
 		return data;
 	}
 }

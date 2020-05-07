@@ -24,10 +24,11 @@ class MyApp extends StatelessWidget {
       initialRoute: G.user.tokenInfo != null ? "/" : "/login",
       onGenerateRoute: (RouteSettings settings) {
         print('build route for ${settings.name}');
+        var args = settings.arguments;
         var routes = <String, WidgetBuilder>{
           "/": (ctx) => HomePage(),
           "/login": (ctx) => Login(),
-          "/ppt": (ctx) => PPT(),
+          "/ppt": (ctx) => PPT(args),
         };
         WidgetBuilder builder = routes[settings.name];
         return MaterialPageRoute(

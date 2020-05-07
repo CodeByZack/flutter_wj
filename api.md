@@ -71,9 +71,6 @@ GET /api/v1/chapters/:id/files
 {
     "prefix": "",
     "files": [""],
-    "host": "",
-    "cdns": {
-        "class100": "",
-    }
+    "host": ""
 }
 ```
